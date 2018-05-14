@@ -1,5 +1,7 @@
 package com.metronom.tictactoe;
 
+import com.metronom.tictactoe.service.TicTacToeService;
+import com.metronom.tictactoe.utils.ConsoleUtility;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TictactoeApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Hello World!");
 		SpringApplication.run(TictactoeApplication.class, args);
+		TicTacToeService ticTacToeService = new TicTacToeService();
+		ConsoleUtility.logProd("Let's play Tic Tac Toe!");
+		ticTacToeService.start();
 	}
 }
