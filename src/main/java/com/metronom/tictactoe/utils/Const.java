@@ -33,7 +33,7 @@ public class Const {
     public static final int LEVEL_OF_THINKING = 2;
 
     //PROPERTIES
-    public static final String PROPERTY_FILE_NAME = "application2.properties";
+    public static final String PROPERTY_FILE_NAME = "application6.properties";
     public static final String PROPERTY_GAME_OPTION = "game_option";
     public static final String PROPERTY_PLAYGROUND_SIZE = "playground_size";
     public static final String PROPERTY_CHARACTER_PLAYER1 = "character_player1";
@@ -47,10 +47,9 @@ public class Const {
     //User communications
     public static final String GAME_START = "new Tic Tac Toe starts...";
     public static final String GAME_COMPLETED = "Game completed, you draw!";
-    public static final String MOVEMENT_INCORRECT = "Movement incorrect.";
     public static final String ENTER_NEXT_MOVE = ", enter move:";
     public static final String FIND_BELOW_COORDINATES = "Please, find below the coordinates you should enter to play: ";
-    public static final String LETS_PLAY = "Let's play!";
+    public static final String LETS_PLAY = "Let's play Tic Tac Toe!";
     public static final String ENTER_X = "Please enter X: ";
     public static final String ENTER_Y = "Please enter Y: ";
     public static final String STATUS_GAME = "Status of the game:";
@@ -60,4 +59,7 @@ public class Const {
     public static final String FIRST_PLAYER = "First user to play is... ";
     public static final String CONGRATULATIONS = "Congratulations ";
     public static final String WINNER_MESSAGE = ", you are the winner.";
+    public static final String YES = "y";
+    public static final String PLAY_AGAIN = "Do you want to play again? (Y/N)";
+    public static final String THANKS = "Thanks for play, bye bye!";
 }

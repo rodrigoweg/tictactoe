@@ -4,7 +4,7 @@ import com.metronom.tictactoe.exceptions.InvalidFormatMovementException;
 import com.metronom.tictactoe.board.Move;
 import com.metronom.tictactoe.utils.ConsoleUtility;
 import com.metronom.tictactoe.utils.Const;
-import com.metronom.tictactoe.utils.Maths;
+import com.metronom.tictactoe.utils.MathsUtility;
 import com.metronom.tictactoe.utils.enums.StatusGame;
 
 import java.util.ArrayList;
@@ -76,8 +76,8 @@ public class TreeNode {
             for (int childIndex = 0; childIndex < results.size(); childIndex++) {
                 try {
                     int childBoard =  results.get(childIndex).get();
-                    if(boardAI.getMove() == null || childBoard > boardAI.getScore()){
-                        boardAI.setMove(possibleMovement.get(childIndex).getMove());
+                    if(boardAI.getNextMove() == null || childBoard > boardAI.getScore()){
+                        boardAI.setNextMove(possibleMovement.get(childIndex).getNextMove());
                         boardAI.setScore(childBoard);
                     }
                     ConsoleUtility.logDebug("LEVEL 1 ("+childIndex+"/"+possibleMovement.size()+")"+(treeLevel)+"-------------------------------> "+childBoard);
@@ -119,12 +119,12 @@ public class TreeNode {
                 } else {
                     int factor = (boardAI.getSize() * boardAI.getSize())+1;
                     if (boardAI.getWinner().getName().equals(boardAI.getPlayerMoving().getName())) {
-                        boardAI.setScore(Maths.factorial((factor-level)));
+                        boardAI.setScore(MathsUtility.factorial((factor-level)));
                     } else {
                         if(level == 2){
                             boardAI.setScore(-999999999);
                         }else{
-                            boardAI.setScore(-2 * Maths.factorial((factor-level)));
+                            boardAI.setScore(-1 * MathsUtility.factorial((factor-level)));
                         }
                     }
                 }
@@ -145,7 +145,7 @@ public class TreeNode {
                     Move move = new Move(x, y, boardAI.getActivePlayer());
                     AIBoard nextBoard = new AIBoard(boardAI.getCopy());
                     nextBoard.doMovement(move);
-                    nextBoard.setMove(move);
+                    nextBoard.setNextMove(move);
                     nextBoard.setPlayerMoving(boardAI.getPlayerMoving());
                     boards.add(nextBoard);
                 }

@@ -6,11 +6,9 @@ import com.metronom.tictactoe.player.PlayerInterface;
 import com.metronom.tictactoe.utils.Const;
 import com.metronom.tictactoe.utils.enums.StatusGame;
 
-import java.util.ArrayList;
-
 public class AIBoard extends Board{
     private int score;
-    private Move move;
+    private Move nextMove;
     private PlayerInterface playerMoving;
 
     public AIBoard(Board board) {
@@ -54,12 +52,12 @@ public class AIBoard extends Board{
         this.score = score;
     }
 
-    public void setMove(Move move) {
-        this.move = move;
+    public void setNextMove(Move nextMove) {
+        this.nextMove = nextMove;
     }
 
-    public Move getMove() {
-        return move;
+    public Move getNextMove() {
+        return nextMove;
     }
 
     public PlayerInterface getPlayerMoving() {

@@ -107,7 +107,7 @@ public class Board implements Serializable {
         if (isGameCompleted()) {
             return StatusGame.FINISH;
         }
-        return StatusGame.NEXT_PLAYER;
+        return StatusGame.NEXT_MOVE;
     }
 
     public boolean isGameCompleted() {

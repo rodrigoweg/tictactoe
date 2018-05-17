@@ -24,10 +24,8 @@ public class AIMove {
         boardAI.setPlayerMoving(player);
         TreeNode tree = new TreeNode(boardAI);
         tree.calculateMovement(Const.LEVEL_ZERO);
-        //tree.calculateMovement(Const.LEVEL_ZERO);
-        //ConsoleUtility.logProd("Puctuation of node: "+result.getScore());
         processing = false;
-        return tree.getBoardAI().getMove();
+        return tree.getBoardAI().getNextMove();
     }
 
     private static void printLoading(){

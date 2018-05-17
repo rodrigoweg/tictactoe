@@ -9,6 +9,7 @@ import com.metronom.tictactoe.player.PlayerInterface;
 import com.metronom.tictactoe.utils.ConfigLoader;
 import com.metronom.tictactoe.utils.ConsoleUtility;
 import com.metronom.tictactoe.utils.Const;
+import com.metronom.tictactoe.utils.SingletonObjectFactory;
 import com.metronom.tictactoe.utils.enums.GameOption;
 import com.metronom.tictactoe.utils.enums.StatusGame;
 
@@ -20,8 +21,8 @@ public class TictactoeControllerImp implements  TictactoeController{
     private Board board;
     private Properties tttProperties;
 
-    public TictactoeControllerImp() throws LoadPropertiesException {
-        initTicTacToe();
+    public TictactoeControllerImp(SingletonObjectFactory sof) throws LoadPropertiesException {
+        initTicTacToe(sof);
     }
 
     public StatusGame doAction(StatusGame statusGame) throws ControllerNotReadyException {
@@ -30,26 +31,16 @@ public class TictactoeControllerImp implements  TictactoeController{
         }
         switch (statusGame) {
             case INIT:
-                statusGame = StatusGame.PAINT_BOARD_WITH_COORDINATES;
                 ConsoleUtility.logProd(Const.GAME_START);
-                break;
-            case ERROR_LOAD_PROPERTIES:
-                ConsoleUtility.error(Const.STOP_GAME);
-                statusGame = StatusGame.STOP;
-                break;
-            case PAINT_BOARD_WITH_COORDINATES:
                 ConsoleUtility.logProd(Const.FIND_BELOW_COORDINATES);
                 board.paintCoordinates();
                 ConsoleUtility.logProd(Const.LETS_PLAY);
                 statusGame = StatusGame.NEXT_MOVE;
                 break;
-            case NEXT_PLAYER:
-                board.updateActivePlayerToNextPlayer();
-                ConsoleUtility.logDebug("Next player: " + board.getActivePlayer().getName());
-                statusGame = StatusGame.NEXT_MOVE;
-                break;
             case NEXT_MOVE:
                 try {
+                    board.updateActivePlayerToNextPlayer();
+                    ConsoleUtility.logDebug("Next player: " + board.getActivePlayer().getName());
                     PlayerInterface player = board.getActivePlayer();
                     Move move = player.move(board);
                     ConsoleUtility.logProd(player.getName() + "("+player.getCharacter()+") moved X: " + move.getX() + " and Y: " + move.getY());
@@ -80,8 +71,8 @@ public class TictactoeControllerImp implements  TictactoeController{
         return board != null && gameOption != null && tttProperties != null;
     }
 
-    private void initTicTacToe() throws LoadPropertiesException {
-        tttProperties = ConfigLoader.loadProperties();
+    private void initTicTacToe(SingletonObjectFactory sof) throws LoadPropertiesException {
+        tttProperties = sof.getConfigLoader().loadProperties();
         if(tttProperties!=null){
             String human1Character = tttProperties.getProperty(Const.PROPERTY_CHARACTER_PLAYER1);
             String human2Character = tttProperties.getProperty(Const.PROPERTY_CHARACTER_PLAYER2);
@@ -89,9 +80,10 @@ public class TictactoeControllerImp implements  TictactoeController{
             int boardSize = Integer.parseInt(tttProperties.getProperty(Const.PROPERTY_PLAYGROUND_SIZE));
 
             gameOption = GameOption.valueOf(tttProperties.getProperty(Const.PROPERTY_GAME_OPTION));
-            board = new Board(boardSize);
+            board = sof.getBoard(boardSize);
             board.initPlayers(gameOption, human1Character, human2Character, computerCharacter);
         }
     }
+
 
 }

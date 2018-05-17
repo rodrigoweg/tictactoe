@@ -14,7 +14,7 @@ public class ConfigLoader {
      *
      * @return Properties object with all required properties and validated
      */
-    static public Properties loadProperties() throws LoadPropertiesException {
+    public Properties loadProperties() throws LoadPropertiesException {
         Properties prop = new Properties();
         OutputStream output = null;
 
