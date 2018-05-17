@@ -31,7 +31,7 @@ public class TictactoeApplication {
 			ConsoleUtility.logProd(Const.LETS_PLAY);
 			while (play.toLowerCase().startsWith(Const.YES)){
 				SingletonObjectFactory sof = new SingletonObjectFactory();
-				TicTacToeService ticTacToeService = new TictactoeServiceImp(sof);
+				TicTacToeService ticTacToeService = sof.getTictactoeService();
 				ticTacToeService.start();
 				ConsoleUtility.logProd(Const.PLAY_AGAIN);
 				Scanner scanner = new Scanner(System.in);
