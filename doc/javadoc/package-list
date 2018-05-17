@@ -1,0 +1,9 @@
+com.metronom.tictactoe
+com.metronom.tictactoe.board
+com.metronom.tictactoe.board.ai
+com.metronom.tictactoe.controller
+com.metronom.tictactoe.exceptions
+com.metronom.tictactoe.player
+com.metronom.tictactoe.service
+com.metronom.tictactoe.utils
+com.metronom.tictactoe.utils.enums
