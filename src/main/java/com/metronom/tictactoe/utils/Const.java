@@ -12,7 +12,7 @@ public class Const {
     public static final String MISSING_PROPERTY = "Missing property: ";
     public static final String PROPERTIES_FILE_ERROR = "Properties file error. Stopping TicTacToe.";
     public static final String STOP_GAME = "Stopping game";
-    public static final String LENGTH_MOVE_INVALID = "Length of coordinates should be 2.";
+    public static final String LENGTH_MOVE_INVALID = "Please enter X and Y separated by coma (X,Y).";
     public static final String NUMERIC_MOVE_INVALID = "Coordinates should be numeric.";
     public static final String ERROR_READING_MOVE = "Error reading move, please try again.";
     public static final String COORDINATES_OUT_BOUNDARIES = "Coordinates out of boundaries. Please enter move between 0 and ";
@@ -33,7 +33,7 @@ public class Const {
     public static final int LEVEL_OF_THINKING = 2;
 
     //PROPERTIES
-    public static final String PROPERTY_FILE_NAME = "application6.properties";
+    public static final String PROPERTY_FILE_NAME = "application.properties";
     public static final String PROPERTY_GAME_OPTION = "game_option";
     public static final String PROPERTY_PLAYGROUND_SIZE = "playground_size";
     public static final String PROPERTY_CHARACTER_PLAYER1 = "character_player1";
@@ -50,7 +50,7 @@ public class Const {
     public static final String ENTER_NEXT_MOVE = ", enter move:";
     public static final String FIND_BELOW_COORDINATES = "Please, find below the coordinates you should enter to play: ";
     public static final String LETS_PLAY = "Let's play Tic Tac Toe!";
-    public static final String ENTER_X = "Please enter X: ";
+    public static final String ENTER_X_Y = "Please enter X,Y: ";
     public static final String ENTER_Y = "Please enter Y: ";
     public static final String STATUS_GAME = "Status of the game:";
     public static final String BOARD_CREATED = "Board created with size: ";
