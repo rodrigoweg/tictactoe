@@ -8,6 +8,9 @@ import com.metronom.tictactoe.utils.Const;
 
 import java.util.Scanner;
 
+/**
+ * This class represent the human player
+ */
 public class Human extends Player {
     public Human(String name, Character character) {
         super(name,character);
@@ -15,7 +18,7 @@ public class Human extends Player {
 
     @Override
     /**
-     * The player study the board and generate a move that should be two ints separated by space
+     * The player inserts a move via commands of console
      */
     public Move move(Board board) throws InvalidFormatMovementException {
         board.paint(Const.PROD);

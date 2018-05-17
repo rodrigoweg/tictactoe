@@ -1,5 +1,6 @@
 package com.metronom.tictactoe.service;
 
+import com.metronom.tictactoe.exceptions.TictactoeExcepiton;
 import com.metronom.tictactoe.utils.SingletonObjectFactory;
 import com.metronom.tictactoe.controller.TictactoeController;
 import com.metronom.tictactoe.exceptions.BoardStatusException;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class TicTacToeServiceTest {
 
     @Test
-    public void startTest() throws LoadPropertiesException, ControllerNotReadyException, BoardStatusException {
+    public void startTest() throws LoadPropertiesException, ControllerNotReadyException, BoardStatusException, TictactoeExcepiton {
 
         TictactoeController tictactoeController = mock(TictactoeController.class);
         when(tictactoeController.doAction(StatusGame.INIT)).thenReturn(StatusGame.NEXT_MOVE);

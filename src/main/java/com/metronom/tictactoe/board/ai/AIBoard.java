@@ -6,16 +6,29 @@ import com.metronom.tictactoe.player.PlayerInterface;
 import com.metronom.tictactoe.utils.Const;
 import com.metronom.tictactoe.utils.enums.StatusGame;
 
-public class AIBoard extends Board{
+/**
+ * This class is an extension of the board with next move calculated, the player moving and the score calculated by the AI.
+ */
+public class AIBoard extends Board {
     private int score;
     private Move nextMove;
     private PlayerInterface playerMoving;
 
+    /**
+     * Copy constructor
+     *
+     * @param board Board to be copied
+     */
     public AIBoard(Board board) {
         super(board.getSize());
         copyBoardFields(board);
     }
 
+    /**
+     * Copy board parameters into the fields of this class
+     *
+     * @param board
+     */
     private void copyBoardFields(Board board) {
         setCells(board.getCells());
         setLastMovement(board.getLastMovement());
@@ -26,19 +39,19 @@ public class AIBoard extends Board{
     }
 
 
+    /**
+     * @return The score of this board based on its status
+     */
     public int getPunctuationBoard() {
         StatusGame status = evaluateBoard();
-        switch (status) {
-            case FINISH:
-                if (getWinner() == null) {
-                    setScore(0);
-                } else {
-                    if (getWinner().getName().equals(Const.COMPUTER)) {
-                        setScore(10);
-                    } else {
-                        setScore(-20);
-                    }
-                }
+        if (getWinner() == null) {
+            setScore(0);
+        } else {
+            if (getWinner().getName().equals(Const.COMPUTER)) {
+                setScore(10);
+            } else {
+                setScore(-20);
+            }
         }
         return getScore();
     }

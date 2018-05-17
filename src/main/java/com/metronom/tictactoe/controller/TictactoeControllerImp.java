@@ -5,6 +5,7 @@ import com.metronom.tictactoe.board.Move;
 import com.metronom.tictactoe.exceptions.ControllerNotReadyException;
 import com.metronom.tictactoe.exceptions.InvalidFormatMovementException;
 import com.metronom.tictactoe.exceptions.LoadPropertiesException;
+import com.metronom.tictactoe.exceptions.TictactoeExcepiton;
 import com.metronom.tictactoe.player.PlayerInterface;
 import com.metronom.tictactoe.utils.ConfigLoader;
 import com.metronom.tictactoe.utils.ConsoleUtility;
@@ -15,17 +16,32 @@ import com.metronom.tictactoe.utils.enums.StatusGame;
 
 import java.util.Properties;
 
+/**
+ * This class manages the states of the game
+ */
 public class TictactoeControllerImp implements  TictactoeController{
 
     private GameOption gameOption;
     private Board board;
     private Properties tttProperties;
 
+    /**
+     * The constructor receive the factory that will provide the required object
+     * @param sof Factory of objects
+     * @throws LoadPropertiesException
+     */
     public TictactoeControllerImp(SingletonObjectFactory sof) throws LoadPropertiesException {
         initTicTacToe(sof);
     }
 
-    public StatusGame doAction(StatusGame statusGame) throws ControllerNotReadyException {
+    /**
+     * This method will process the transitions between states
+     * @param statusGame State of the hgame
+     * @return New state of the game
+     * @throws ControllerNotReadyException
+     * @throws TictactoeExcepiton
+     */
+    public StatusGame doAction(StatusGame statusGame) throws ControllerNotReadyException, TictactoeExcepiton {
         if(!isControllerInitiated()){
             throw new ControllerNotReadyException();
         }
@@ -67,10 +83,19 @@ public class TictactoeControllerImp implements  TictactoeController{
         return statusGame;
     }
 
+    /**
+     * Returns if there is the controller is busy
+     * @return
+     */
     private boolean isControllerInitiated() {
         return board != null && gameOption != null && tttProperties != null;
     }
 
+    /**
+     * This method gets the properties, create the players and select the first player
+     * @param sof
+     * @throws LoadPropertiesException
+     */
     private void initTicTacToe(SingletonObjectFactory sof) throws LoadPropertiesException {
         tttProperties = sof.getConfigLoader().loadProperties();
         if(tttProperties!=null){

@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Board is the class that represents the board of the game
+ */
 public class Board implements Serializable {
 
     private Cell[][] cells;
@@ -22,6 +25,10 @@ public class Board implements Serializable {
     private int activePlayerId;
     private List<PlayerInterface> players = new ArrayList<>();
 
+    /**
+     * Constructor receives the size of the board
+     * @param size Size of the game
+     */
     public Board(int size) {
         ConsoleUtility.logDebug(Const.BOARD_CREATED + size);
         this.size = size;
@@ -29,6 +36,13 @@ public class Board implements Serializable {
         cells = new Cell[size][size];
     }
 
+    /**
+     * This method creates the users for the game
+     * @param gameOption Type of game that is configured in the properties file
+     * @param human1Character Human1 character for the game
+     * @param human2Character Human2 character for the game
+     * @param computerCharacter Computer character
+     */
     public void initPlayers(GameOption gameOption, String human1Character, String human2Character, String computerCharacter) {
         players.clear();
 
@@ -60,6 +74,10 @@ public class Board implements Serializable {
         ConsoleUtility.logProd(Const.FIRST_PLAYER + players.get(activePlayerId).getName());
     }
 
+    /**
+     * Paint the board depending the severity send. It is possible to use this method for debug also
+     * @param severity
+     */
     public void paint(String severity) {
         ConsoleUtility.log("", severity);
         ConsoleUtility.log(Const.STATUS_GAME, severity);
@@ -74,6 +92,9 @@ public class Board implements Serializable {
         }
     }
 
+    /**
+     * Paint coordinates for the user at the beggining of the game
+     */
     public void paintCoordinates() {
         if (size > 0) {
             int rows = cells.length;
@@ -90,6 +111,11 @@ public class Board implements Serializable {
         }
     }
 
+    /**
+     * Execute the movement over the current board
+     * @param move Movement to be executed
+     * @throws InvalidFormatMovementException
+     */
     public void doMovement(Move move) throws InvalidFormatMovementException {
         lastMovement = move;
         validateMove(move);
@@ -98,6 +124,10 @@ public class Board implements Serializable {
         freeCells--;
     }
 
+    /**
+     * Check if there is any line, if the board is full and return the state of the board
+     * @return State of the board
+     */
     public StatusGame evaluateBoard() {
         boolean lineCompleted = isLineCompleted();
         if (lineCompleted) {
@@ -110,10 +140,18 @@ public class Board implements Serializable {
         return StatusGame.NEXT_MOVE;
     }
 
+    /**
+     * Returns if there are cells available or not
+     * @return If there are cell available or not
+     */
     public boolean isGameCompleted() {
         return freeCells == 0;
     }
 
+    /**
+     * Returns the player that should move
+     * @return Player that should move
+     */
     public PlayerInterface getActivePlayer() {
         if (players != null) {
             return players.get(activePlayerId);
@@ -122,6 +160,30 @@ public class Board implements Serializable {
         return null;
     }
 
+
+    /**
+     * Returns a copy of the object
+     * @return Copy of the board from this object
+     */
+    public Board getCopy() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return (Board) ois.readObject();
+        } catch (Exception e) {
+            ConsoleUtility.logDebug(e.toString());
+            return null;
+        }
+    }
+
+
+    /**
+     * If there is winner, returns the player that has won
+     * @return Player that has won
+     */
     public PlayerInterface getWinner() {
         return winner;
     }
@@ -177,6 +239,11 @@ public class Board implements Serializable {
     }
 
 
+    /**
+     * Validate the movement
+     * @param move
+     * @throws InvalidFormatMovementException
+     */
     private void validateMove(Move move) throws InvalidFormatMovementException {
         if (move.getX() < 0 || move.getX() >= this.size ||
                 move.getY() < 0 || move.getY() >= this.size) {
@@ -261,20 +328,6 @@ public class Board implements Serializable {
     public void updateActivePlayerToNextPlayer() {
         activePlayerId = (activePlayerId + 1) % players.size();
         ConsoleUtility.logDebug("Now is time to play for: " + players.get(activePlayerId).getName());
-    }
-
-    public Board getCopy() {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(this);
-            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            return (Board) ois.readObject();
-        } catch (Exception e) {
-            ConsoleUtility.logDebug(e.toString());
-            return null;
-        }
     }
 
 }

@@ -2,6 +2,9 @@ package com.metronom.tictactoe.board;
 
 import java.io.Serializable;
 
+/**
+ * Represents each cell of the board
+ */
 public class Cell implements Serializable {
     private Character value;
 

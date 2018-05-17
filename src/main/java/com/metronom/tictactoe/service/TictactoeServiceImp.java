@@ -1,5 +1,6 @@
 package com.metronom.tictactoe.service;
 
+import com.metronom.tictactoe.exceptions.TictactoeExcepiton;
 import com.metronom.tictactoe.utils.SingletonObjectFactory;
 import com.metronom.tictactoe.exceptions.ControllerNotReadyException;
 import com.metronom.tictactoe.controller.TictactoeController;
@@ -8,6 +9,9 @@ import com.metronom.tictactoe.exceptions.LoadPropertiesException;
 import com.metronom.tictactoe.utils.Const;
 import com.metronom.tictactoe.utils.enums.StatusGame;
 
+/**
+ * This class will provide the service to play a game
+ */
 public class TictactoeServiceImp implements TicTacToeService{
 
     private boolean playActive;
@@ -17,7 +21,13 @@ public class TictactoeServiceImp implements TicTacToeService{
         this.tictactoeController = sof.getTictactoeController();
     }
 
-    public void start() throws BoardStatusException, ControllerNotReadyException {
+    /**
+     * This methods will start a game
+     * @throws BoardStatusException
+     * @throws ControllerNotReadyException
+     * @throws TictactoeExcepiton
+     */
+    public void start() throws BoardStatusException, ControllerNotReadyException, TictactoeExcepiton {
         if(!playActive){
             playActive = true;
             StatusGame nextState = StatusGame.INIT;

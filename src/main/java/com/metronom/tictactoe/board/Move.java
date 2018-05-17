@@ -4,6 +4,9 @@ import com.metronom.tictactoe.player.PlayerInterface;
 
 import java.io.Serializable;
 
+/**
+ * Represent one movement for one player
+ */
 public class Move implements Serializable{
     private final int y;
     private final int x;

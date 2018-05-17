@@ -1,5 +1,6 @@
 package com.metronom.tictactoe;
 
+import com.metronom.tictactoe.exceptions.TictactoeExcepiton;
 import com.metronom.tictactoe.utils.SingletonObjectFactory;
 import com.metronom.tictactoe.exceptions.ControllerNotReadyException;
 import com.metronom.tictactoe.exceptions.BoardStatusException;
@@ -13,9 +14,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Scanner;
 
+/**
+ * This class loads SpringBoot and contain the main method that starts the game
+ */
 @SpringBootApplication
 public class TictactoeApplication {
 
+    /**
+     * Main method of the Tictactoe
+     * @param args No args are read
+     */
 	public static void main(String[] args) {
 		SpringApplication.run(TictactoeApplication.class, args);
 		try {
@@ -40,8 +48,10 @@ public class TictactoeApplication {
 		} catch (ControllerNotReadyException e) {
 			ConsoleUtility.error(e.getMessage());
 			e.printStackTrace();
-		}
-		finally {
+		} catch (TictactoeExcepiton e) {
+			ConsoleUtility.error(e.getMessage());
+			e.printStackTrace();
+		} finally {
 			System.exit(0);
 		}
 	}

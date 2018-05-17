@@ -5,6 +5,7 @@ import com.metronom.tictactoe.board.Move;
 import com.metronom.tictactoe.exceptions.ControllerNotReadyException;
 import com.metronom.tictactoe.exceptions.InvalidFormatMovementException;
 import com.metronom.tictactoe.exceptions.LoadPropertiesException;
+import com.metronom.tictactoe.exceptions.TictactoeExcepiton;
 import com.metronom.tictactoe.player.Computer;
 import com.metronom.tictactoe.player.PlayerInterface;
 import com.metronom.tictactoe.utils.ConfigLoader;
@@ -33,7 +34,7 @@ public class TictactoeControllerImpTest {
     Move move = null;
 
     @Before
-    public void setUp() throws LoadPropertiesException, InvalidFormatMovementException {
+    public void setUp() throws LoadPropertiesException, InvalidFormatMovementException, TictactoeExcepiton {
         tttProperties = mock(Properties.class);
         configLoader = mock(ConfigLoader.class);
         when(configLoader.loadProperties()).thenReturn(tttProperties);
@@ -56,7 +57,7 @@ public class TictactoeControllerImpTest {
     }
 
     @Test
-    public void doActionInit() throws LoadPropertiesException, ControllerNotReadyException {
+    public void doActionInit() throws LoadPropertiesException, ControllerNotReadyException, TictactoeExcepiton {
 
         TictactoeController controller = new TictactoeControllerImp(sof);
         StatusGame status = controller.doAction(StatusGame.INIT);
@@ -64,29 +65,28 @@ public class TictactoeControllerImpTest {
     }
 
     @Test
-    public void doActionNextMove() throws LoadPropertiesException, ControllerNotReadyException {
+    public void doActionNextMove() throws LoadPropertiesException, ControllerNotReadyException, TictactoeExcepiton {
         TictactoeController controller = new TictactoeControllerImp(sof);
         StatusGame status = controller.doAction(StatusGame.NEXT_MOVE);
         assertEquals(status,StatusGame.EVALUATE_BOARD);
     }
 
     @Test
-    public void doActionEvaluate() throws LoadPropertiesException, ControllerNotReadyException {
+    public void doActionEvaluate() throws LoadPropertiesException, ControllerNotReadyException, TictactoeExcepiton {
         TictactoeController controller = new TictactoeControllerImp(sof);
         StatusGame status = controller.doAction(StatusGame.EVALUATE_BOARD);
         assertEquals(status,StatusGame.FINISH);
     }
 
     @Test
-    public void doActionFinsishDraw() throws LoadPropertiesException, ControllerNotReadyException {
+    public void doActionFinsishDraw() throws LoadPropertiesException, ControllerNotReadyException, TictactoeExcepiton {
         TictactoeController controller = new TictactoeControllerImp(sof);
-
         StatusGame status = controller.doAction(StatusGame.FINISH);
         assertEquals(status,StatusGame.STOP);
     }
 
     @Test
-    public void doActionFinishWin() throws LoadPropertiesException, ControllerNotReadyException {
+    public void doActionFinishWin() throws LoadPropertiesException, ControllerNotReadyException, TictactoeExcepiton {
         TictactoeController controller = new TictactoeControllerImp(sof);
         when(board.getWinner()).thenReturn(computer);
         StatusGame status = controller.doAction(StatusGame.FINISH);
