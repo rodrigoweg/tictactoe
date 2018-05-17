@@ -8,9 +8,9 @@ import java.util.concurrent.Callable;
 public class WorkerThread implements Callable<Integer> {
 
     private String name;
-    private final Node node;
+    private final TreeNode node;
 
-    public WorkerThread(String name, Node node) {
+    public WorkerThread(TreeNode node) {
         this.name=name;
         this.node = node;
     }

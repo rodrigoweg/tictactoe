@@ -11,24 +11,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-public class Node {
+public class TreeNode {
 
     private AIBoard boardAI;
-    private List<Node> children;
+    private List<TreeNode> children;
 
-    public Node(AIBoard boardAI) {
+    public TreeNode(AIBoard boardAI) {
         this.boardAI = boardAI;
         children = new ArrayList<>();
     }
 
+    /**
+     * Recursive method that iterates the possible solutions 
+     * @param treeLevel Level of explore the tree
+     * @return Puctuation for the movement
+     * @throws InvalidFormatMovementException
+     */
     public int calculateMovement(int treeLevel) throws InvalidFormatMovementException {
-
+        //Base case for recursive method 
         if (treeLevel >= getMaxLevelOfThiking() ||
                 boardAI.isGameCompleted()
                 || boardAI.evaluateBoard().equals(StatusGame.FINISH)
                 ) {
             //It is a leave(boardAI complete) or there is a winner or number of movements processed is max
-            updatePunctuationBoard(treeLevel);
+            updateIABoardStatus(treeLevel);
             ConsoleUtility.logInfo("The node below has this punctuation: "
                     + boardAI.getScore() + " for player: " + boardAI.getPlayerMoving().getName()
                         +" ( "+ boardAI.getPlayerMoving().getCharacter() + " )");
@@ -36,21 +42,24 @@ public class Node {
             ConsoleUtility.logDebug("LEVEL "+(treeLevel)+" -> "+ boardAI.getScore());
             return boardAI.getScore();
         }
-
+        
         List<AIBoard> possibleMovement = getNextBoards();
         ConsoleUtility.logDebug("Player for AI now is: " + boardAI.getActivePlayer().getName());
         treeLevel++;
         int levelScore = 0;
+        // Objects required for managing the threads
         ExecutorService executorService = Executors.newFixedThreadPool(possibleMovement.size());
         List<Future<Integer>> results = new ArrayList<Future<Integer>>(possibleMovement.size());
+        
         for (int childIndex = 0; childIndex < possibleMovement.size(); childIndex++) {
             AIBoard nextBoard = possibleMovement.get(childIndex);
             nextBoard.updateActivePlayerToNextPlayer();
-            Node child = new Node(nextBoard);
+            TreeNode child = new TreeNode(nextBoard);
             Move move = nextBoard.getLastMovement();
 
             if(treeLevel == 1){
-                Callable<Integer> task = new WorkerThread("Child_"+childIndex, child);
+                //In the first level, each child is processed in a different thread
+                Callable<Integer> task = new WorkerThread(child);
                 results.add(executorService.submit(task));
             }else{
                 int childBoard = child.calculateMovement(treeLevel);
@@ -58,6 +67,11 @@ public class Node {
                 ConsoleUtility.logDebug("LEVEL ("+childIndex+"/"+possibleMovement.size()+")"+(treeLevel)+" -> "+levelScore);
             }
         }
+        joinResultsFromThreads(treeLevel, possibleMovement, results);
+        return levelScore;
+    }
+
+    private void joinResultsFromThreads(int treeLevel, List<AIBoard> possibleMovement, List<Future<Integer>> results) {
         if(treeLevel == 1){
             for (int childIndex = 0; childIndex < results.size(); childIndex++) {
                 try {
@@ -74,7 +88,6 @@ public class Node {
                 }
             }
         }
-        return levelScore;
     }
 
     private int getMaxLevelOfThiking() {
@@ -86,14 +99,18 @@ public class Node {
         return boardAI;
     }
 
-    private Node getChildren(int index) {
+    private TreeNode getChildren(int index) {
         if (index >= children.size()) {
             return null;
         }
         return children.get(index);
     }
 
-    private void updatePunctuationBoard(int level) {
+    /**
+     * Evaluate the board and set the score
+     * @param level
+     */
+    private void updateIABoardStatus(int level) {
         StatusGame status = boardAI.evaluateBoard();
         switch (status) {
             case FINISH:
@@ -115,6 +132,11 @@ public class Node {
         }
     }
 
+    /**
+     * This method create one board for each empty cell. Each time put one more movement
+     * @return List of boards
+     * @throws InvalidFormatMovementException If the movement is not valid this exception is thrown
+     */
     private List<AIBoard> getNextBoards() throws InvalidFormatMovementException {
         List<AIBoard> boards = new ArrayList<>();
         for (int x = 0; x < boardAI.getSize(); x++) {

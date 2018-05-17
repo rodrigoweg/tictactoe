@@ -22,7 +22,7 @@ public class AIMove {
         Board boardCloned = board.getCopy();
         AIBoard boardAI = new AIBoard(boardCloned);
         boardAI.setPlayerMoving(player);
-        Node tree = new Node(boardAI);
+        TreeNode tree = new TreeNode(boardAI);
         tree.calculateMovement(Const.LEVEL_ZERO);
         //tree.calculateMovement(Const.LEVEL_ZERO);
         //ConsoleUtility.logProd("Puctuation of node: "+result.getScore());
