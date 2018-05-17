@@ -31,7 +31,7 @@ public class Human extends Player {
                 ConsoleUtility.logProd(Const.ENTER_X_Y);
                 Scanner scanner = new Scanner(System.in);
                 String xy = scanner.next();
-                Move move = validateMove(xy,board.getSize());
+                Move move = validateMove(xy,board);
                 validMove = true;
                 return move;
             } catch (InvalidFormatMovementException e) {
