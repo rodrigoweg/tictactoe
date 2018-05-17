@@ -10,9 +10,9 @@ import java.util.Properties;
 public class ConfigLoader {
 
     /**
-     * This method load a property file for the classpath
+     * This method load a property file from the classpath
      *
-     * @return
+     * @return Properties object with all required properties and validated
      */
     static public Properties loadProperties() throws LoadPropertiesException {
         Properties prop = new Properties();
@@ -51,15 +51,20 @@ public class ConfigLoader {
         return prop;
     }
 
-    private static boolean validProperties(Properties prop) {
+    /**
+     *
+     * @param properties properties required to load the game
+     * @return If all required properties are present or not
+     */
+    public static boolean validProperties(Properties properties) {
         boolean validProperties = true;
-        String size = prop.getProperty(Const.PROPERTY_PLAYGROUND_SIZE);
-        String gameOption = prop.getProperty(Const.PROPERTY_GAME_OPTION);
-        String p1 = prop.getProperty(Const.PROPERTY_CHARACTER_PLAYER1);
-        String p2 = prop.getProperty(Const.PROPERTY_CHARACTER_PLAYER2);
-        String comp = prop.getProperty(Const.PROPERTY_CHARACTER_COMPUTER);
+        String size = properties.getProperty(Const.PROPERTY_PLAYGROUND_SIZE);
+        String gameOption = properties.getProperty(Const.PROPERTY_GAME_OPTION);
+        String player1Character = properties.getProperty(Const.PROPERTY_CHARACTER_PLAYER1);
+        String player2Character = properties.getProperty(Const.PROPERTY_CHARACTER_PLAYER2);
+        String computerCharacter = properties.getProperty(Const.PROPERTY_CHARACTER_COMPUTER);
 
-        String logLevel = prop.getProperty(Const.PROPERTY_LOG_LEVEL);
+        String logLevel = properties.getProperty(Const.PROPERTY_LOG_LEVEL);
         ConsoleUtility.setLogLevel(logLevel);
 
         // Size validation
@@ -70,6 +75,7 @@ public class ConfigLoader {
         } else {
             try {
                 int sizeInt = Integer.parseInt(size);
+                //Checking if size is between required values
                 if (sizeInt < Const.MIN_PLAYGROUND_SIZE || sizeInt > Const.MAX_PLAYGROUND_SIZE) {
                     ConsoleUtility.error(Const.SIZE_INVALID + sizeInt);
                     validProperties = false;
@@ -81,7 +87,7 @@ public class ConfigLoader {
             }
         }
 
-        // Option validation
+        // GameOption validation
         if (gameOption == null) {
             //size is not a number
             ConsoleUtility.error(Const.MISSING_PROPERTY + Const.PROPERTY_GAME_OPTION);
@@ -94,38 +100,38 @@ public class ConfigLoader {
                 validProperties = false;
             }
         }
-        // P1 validation
-        if (p1 == null) {
+        // Player1 character validation
+        if (player1Character == null) {
             //size is not a number
             ConsoleUtility.error(Const.MISSING_PROPERTY + Const.PROPERTY_CHARACTER_PLAYER1);
             validProperties = false;
         } else {
-            if (p1.length() != 1) {
-                ConsoleUtility.error(Const.CHARACTER_NOT_VALID + p1 + "' for player1");
+            if (player1Character.length() != 1) {
+                ConsoleUtility.error(Const.CHARACTER_NOT_VALID + player1Character + "' for player1");
                 validProperties = false;
             }
         }
 
-        // P1 validation
-        if (p2 == null) {
+        // Player2 character validation
+        if (player2Character == null) {
             //size is not a number
             ConsoleUtility.error(Const.MISSING_PROPERTY + Const.PROPERTY_CHARACTER_PLAYER2);
             validProperties = false;
         } else {
-            if (p2.length() != 1) {
-                ConsoleUtility.error(Const.CHARACTER_NOT_VALID + p2 + "' for player2");
+            if (player2Character.length() != 1) {
+                ConsoleUtility.error(Const.CHARACTER_NOT_VALID + player2Character + "' for player2");
                 validProperties = false;
             }
         }
 
-        // P1 validation
-        if (comp == null) {
+        // ComputerCharacter validation
+        if (computerCharacter == null) {
             //size is not a number
             ConsoleUtility.error(Const.MISSING_PROPERTY + Const.PROPERTY_CHARACTER_COMPUTER);
             validProperties = false;
         } else {
-            if (comp.length() != 1) {
-                ConsoleUtility.error(Const.CHARACTER_NOT_VALID + comp + "' for computer");
+            if (computerCharacter.length() != 1) {
+                ConsoleUtility.error(Const.CHARACTER_NOT_VALID + computerCharacter + "' for computer");
                 validProperties = false;
             }
         }

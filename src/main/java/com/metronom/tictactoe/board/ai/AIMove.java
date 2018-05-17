@@ -1,7 +1,7 @@
 package com.metronom.tictactoe.board.ai;
 
 import com.metronom.tictactoe.board.Board;
-import com.metronom.tictactoe.exceptions.BoarStatusException;
+import com.metronom.tictactoe.exceptions.BoardStatusException;
 import com.metronom.tictactoe.exceptions.InvalidFormatMovementException;
 import com.metronom.tictactoe.board.Move;
 import com.metronom.tictactoe.player.PlayerInterface;
@@ -12,9 +12,9 @@ public class AIMove {
 
     private static boolean processing;
 
-    public static Move getNextCleverMovement(Board board, PlayerInterface player) throws InvalidFormatMovementException, BoarStatusException {
+    public static Move getNextCleverMovement(Board board, PlayerInterface player) throws InvalidFormatMovementException, BoardStatusException {
         if (board.isGameCompleted()) {
-            throw new BoarStatusException(Const.BOARD_COMPLETED);
+            throw new BoardStatusException(Const.BOARD_COMPLETED);
         }
         processing = true;
         printLoading();

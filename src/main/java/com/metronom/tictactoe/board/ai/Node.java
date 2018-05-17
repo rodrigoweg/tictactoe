@@ -9,12 +9,12 @@ import com.metronom.tictactoe.utils.enums.StatusGame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class Node {
 
     private AIBoard boardAI;
     private List<Node> children;
-
 
     public Node(AIBoard boardAI) {
         this.boardAI = boardAI;
@@ -41,56 +41,45 @@ public class Node {
         ConsoleUtility.logDebug("Player for AI now is: " + boardAI.getActivePlayer().getName());
         treeLevel++;
         int levelScore = 0;
-        int childNumber = 0;
-        for (AIBoard nextBoard : possibleMovement) {
+        ExecutorService executorService = Executors.newFixedThreadPool(possibleMovement.size());
+        List<Future<Integer>> results = new ArrayList<Future<Integer>>(possibleMovement.size());
+        for (int childIndex = 0; childIndex < possibleMovement.size(); childIndex++) {
+            AIBoard nextBoard = possibleMovement.get(childIndex);
             nextBoard.updateActivePlayerToNextPlayer();
             Node child = new Node(nextBoard);
             Move move = nextBoard.getLastMovement();
-            int childBoard = child.calculateMovement(treeLevel);
 
             if(treeLevel == 1){
-                if(boardAI.getMove() == null || childBoard > boardAI.getScore()){
-                    boardAI.setMove(possibleMovement.get(childNumber).getMove());
-                    boardAI.setScore(childBoard);
-                }
-                childNumber++;
-                ConsoleUtility.logDebug("LEVEL 1 ("+childNumber+"/"+possibleMovement.size()+")"+(treeLevel)+"-------------------------------> "+childBoard);
+                Callable<Integer> task = new WorkerThread("Child_"+childIndex, child);
+                results.add(executorService.submit(task));
             }else{
+                int childBoard = child.calculateMovement(treeLevel);
                 levelScore = levelScore + childBoard;
-                childNumber++;
-                ConsoleUtility.logDebug("LEVEL ("+childNumber+"/"+possibleMovement.size()+")"+(treeLevel)+" -> "+levelScore);
+                ConsoleUtility.logDebug("LEVEL ("+childIndex+"/"+possibleMovement.size()+")"+(treeLevel)+" -> "+levelScore);
             }
-
-            /*if (bestScoredBoard == null || bestScoredBoard.getScore() < childBoard.getScore()) {
-
-                bestScoredBoard = childBoard;
-                bestScoredBoard.setMove(move);
-            } else {
-                //Adding random to be less predictable
-                if (bestScoredBoard.getScore() == childBoard.getScore()) {
-                    int random100 = (new Random()).nextInt(100);
-                    if (random100 > 50) {
-                        bestScoredBoard = childBoard;
-                        bestScoredBoard.setMove(move);
-                    }
-                }
-            }*/
-            //We cut some branches when apparently is good move
-            /*if(childBoard.getScore() > Const.THRESHOLD_GOOD*boardAI.getBoardAI().getSize()){
-                bestScoredBoard = childBoard;
-                bestScoredBoard.setMove(move);
-                bestScoredBoard.setScore(bestScoredBoard.getScore()+childBoard.getScore());
-                return bestScoredBoard;
-            }*/
-
-
         }
-
+        if(treeLevel == 1){
+            for (int childIndex = 0; childIndex < results.size(); childIndex++) {
+                try {
+                    int childBoard =  results.get(childIndex).get();
+                    if(boardAI.getMove() == null || childBoard > boardAI.getScore()){
+                        boardAI.setMove(possibleMovement.get(childIndex).getMove());
+                        boardAI.setScore(childBoard);
+                    }
+                    ConsoleUtility.logDebug("LEVEL 1 ("+childIndex+"/"+possibleMovement.size()+")"+(treeLevel)+"-------------------------------> "+childBoard);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return levelScore;
     }
 
     private int getMaxLevelOfThiking() {
-        return 2 * (Const.LEVEL_OF_THINKING -boardAI.getSize());
+        //return Const.LEVEL_OF_THINKING;
+        return Const.LEVEL_OF_THINKING == 100? boardAI.getSize()*boardAI.getSize() : 2;
     }
 
     public AIBoard getBoardAI() {

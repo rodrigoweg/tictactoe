@@ -19,6 +19,8 @@ public class Const {
     public static final String CELL_ALREADY_USED = "Cell already in use. Please, chose another one.";
     public static final String INIT_BOARD = "Not possible to paint board. Please init before paint.";
     public static final String BOARD_COMPLETED = "I can not move, board is completed!";
+    public static final String GAME_ALREADY_ACTIVE = "Not possible to start a new game. Already game started.";
+    public static final String CONTROLLER_NOT_INITIATED = "The controller is not initiated. Game will stop.";
 
     //PARAMETERS
     public static final int MIN_PLAYGROUND_SIZE = 0;
@@ -28,12 +30,10 @@ public class Const {
     public static final String COMPUTER = "computer";
     public static final String COMPUTER2 = "computer2";
     public static final int LEVEL_ZERO = 0;
-    public static final int LEVEL_OF_THINKING = 11;
-    public static final int THRESHOLD_GOOD = 9;
-    public static final int THRESHOLD_BAD = -20;
+    public static final int LEVEL_OF_THINKING = 2;
 
     //PROPERTIES
-    public static final String PROPERTY_FILE_NAME = "application5.properties";
+    public static final String PROPERTY_FILE_NAME = "application2.properties";
     public static final String PROPERTY_GAME_OPTION = "game_option";
     public static final String PROPERTY_PLAYGROUND_SIZE = "playground_size";
     public static final String PROPERTY_CHARACTER_PLAYER1 = "character_player1";
@@ -60,5 +60,4 @@ public class Const {
     public static final String FIRST_PLAYER = "First user to play is... ";
     public static final String CONGRATULATIONS = "Congratulations ";
     public static final String WINNER_MESSAGE = ", you are the winner.";
-
 }

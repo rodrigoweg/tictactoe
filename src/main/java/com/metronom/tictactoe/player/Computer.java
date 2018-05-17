@@ -3,7 +3,7 @@ package com.metronom.tictactoe.player;
 import com.metronom.tictactoe.board.Board;
 import com.metronom.tictactoe.board.Move;
 import com.metronom.tictactoe.board.ai.AIMove;
-import com.metronom.tictactoe.exceptions.BoarStatusException;
+import com.metronom.tictactoe.exceptions.BoardStatusException;
 import com.metronom.tictactoe.exceptions.InvalidFormatMovementException;
 import com.metronom.tictactoe.utils.Const;
 
@@ -17,7 +17,7 @@ public class Computer extends Player {
         try {
             board.paint(Const.PROD);
             return AIMove.getNextCleverMovement(board,this);
-        } catch (BoarStatusException e) {
+        } catch (BoardStatusException e) {
             e.printStackTrace();
             return null;
         }
